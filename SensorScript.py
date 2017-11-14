@@ -1,7 +1,14 @@
 import time
 import datetime
 import RPi.GPIO as GPIO
+from logentries import LogentriesHandler
+import logging
 
+log = logging.getLogger('logentries')
+log.setLevel(logging.INFO)
+
+# logentries token
+log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
 
 def bin2dec(string_num):
     return str(int(string_num, 2))
@@ -193,5 +200,8 @@ while i < 40:
     # waiting 5 seconds before taking the input
     time.sleep(5)
 
+# to log the data on logentries
+log.info('Im an info message')
+log.warn('Im a warning message')
 # closing the file
 out.close()
