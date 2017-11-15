@@ -7,8 +7,7 @@ import logging
 log = logging.getLogger('logentries')
 log.setLevel(logging.INFO)
 
-# logentries token
-log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
+
 
 def bin2dec(string_num):
     return str(int(string_num, 2))
@@ -52,7 +51,9 @@ def output_to_file(dt, a, b):
 
 # function testing the room temperature according to which table will be created for alerts
 def generate_val(dt, a, b):
-    print ('{}-{}-{} {}:{}:{}.{}  humidity = {} temperature = {} \n'.format(dt.year, dt.month, dt.day,
+    # to log the data on logentries
+    log.info("its working")
+    log.info('{}-{}-{} {}:{}:{}.{}  humidity = {} temperature = {} \n'.format(dt.year, dt.month, dt.day,
                                                                             dt.hour, dt.minute, dt.second,
                                                                             dt.microsecond, a, b))
 
@@ -165,9 +166,11 @@ def temp():
     # Returning the list
     return values
 
+# logentries token
+log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
 
 # creating a file
-out = open("output.txt", "w")
+# out = open("output.txt", "w")
 
 # running the program to transfer output to a file
 output = []
@@ -192,7 +195,7 @@ while i < 40:
     # To Define Alerts
     generate_val(dt, a, b)
     # Output to the generates file
-    output_to_file(dt, a, b)
+    #output_to_file(dt, a, b)
 
     # to iterate the loop
     i = i + 1
@@ -200,8 +203,6 @@ while i < 40:
     # waiting 5 seconds before taking the input
     time.sleep(5)
 
-# to log the data on logentries
-log.info('Im an info message')
-log.warn('Im a warning message')
+
 # closing the file
 out.close()
