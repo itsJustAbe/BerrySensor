@@ -6,7 +6,11 @@ import RPi.GPIO as GPIO
 from logentries import LogentriesHandler
 import logging
 
-USER_ID = "shivam"
+# add user Id
+USER_ID = ""
+
+# add user GPIO pin
+GPIO_user = ""
 
 log = logging.getLogger('logentries')
 log.setLevel(logging.INFO)
@@ -30,10 +34,10 @@ def temp():
 
     GPIO.setmode(GPIO.BCM)
 
-    GPIO.setup(4, GPIO.OUT)
-    GPIO.output(4, GPIO.HIGH)
+    GPIO.setup(GPIO_user, GPIO.OUT)
+    GPIO.output(GPIO_user, GPIO.HIGH)
     time.sleep(0.025)
-    GPIO.output(4, GPIO.LOW)
+    GPIO.output(GPIO_user, GPIO.LOW)
     time.sleep(0.02)
 
     GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
