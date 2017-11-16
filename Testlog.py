@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from logentries import LogentriesHandler
 import logging
 import time

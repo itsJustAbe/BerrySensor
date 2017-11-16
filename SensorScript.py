@@ -1,61 +1,27 @@
 import time
 import datetime
 import RPi.GPIO as GPIO
+
+# noinspection PyUnresolvedReferences
 from logentries import LogentriesHandler
 import logging
 
+USER_ID = "shivam"
+
 log = logging.getLogger('logentries')
 log.setLevel(logging.INFO)
-
 
 
 def bin2dec(string_num):
     return str(int(string_num, 2))
 
 
-# function to transfer all the output to a text file with alerts
-def output_to_file(dt, a, b):
-    lHumidity = "humidity is low"
-    hHumidity = "humidity is high"
-    hTemperature = "temperature is high"
-    lTemperature = "temperature is low"
-
-    # normal case
-    if 45 < a <= 53 and 20 < b <= 25:
-        out.write('{}-{}-{} {}:{}:{}.{}  humidity = {} temperature = {}'.format(dt.year, dt.month, dt.day,
-                                                                                dt.hour, dt.minute, dt.second,
-                                                                                dt.microsecond, a, b))
-    # High humidity
-    elif a > 53:
-        out.write('{}-{}-{} {}:{}:{}.{} {}'.format(dt.year, dt.month, dt.day,
-                                                   dt.hour, dt.minute, dt.second,
-                                                   dt.microsecond, hHumidity))
-    # low humidity
-    elif a <= 45:
-        out.write('{}-{}-{} {}:{}:{}.{} {} '.format(dt.year, dt.month, dt.day,
-                                                    dt.hour, dt.minute, dt.second,
-                                                    dt.microsecond, lHumidity))
-    # high temperature
-    elif b > 25:
-        out.write('{}-{}-{} {}:{}:{}.{} {}'.format(dt.year, dt.month, dt.day,
-                                                   dt.hour, dt.minute, dt.second,
-                                                   dt.microsecond, hTemperature))
-    # low temperature
-    elif b <= 20:
-        out.write('{}-{}-{} {}:{}:{}.{} {}'.format(dt.year, dt.month, dt.day,
-                                                   dt.hour, dt.minute, dt.second,
-                                                   dt.microsecond, lTemperature))
-
-    out.write("\n")
-
-
 # function testing the room temperature according to which table will be created for alerts
 def generate_val(dt, a, b):
     # to log the data on logentries
-    log.info("its working")
-    log.info('{}-{}-{} {}:{}:{}.{}  humidity = {} temperature = {} \n'.format(dt.year, dt.month, dt.day,
-                                                                            dt.hour, dt.minute, dt.second,
-                                                                            dt.microsecond, a, b))
+    log.info('{}-{}-{} {}:{}:{}.{} User ID: {} temperature = {} humidity = {} \n'.format(dt.year, dt.month, dt.day,
+                                                                              dt.hour, dt.minute, dt.second,
+                                                                              dt.microsecond, USER_ID, b, a))
 
 
 def temp():
@@ -166,6 +132,7 @@ def temp():
     # Returning the list
     return values
 
+
 # logentries token
 log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
 
@@ -177,25 +144,27 @@ output = []
 i = 0
 
 # running the loop 40 times to capture 15 outputs
-while i < 40:
+while True:
     dt = datetime.datetime.now()
 
     mylist = temp()
 
-    a = float(mylist[0])
-    b = float(mylist[1])
+    hum1 = float(mylist[0])
+    temp1 = float(mylist[1])
 
     c = float(mylist[2]) / 10
     d = float(mylist[3]) / 10
+
     # adding the decimal bits
-    a = a + c
-    b = b + d
-    print('humidity decimal  = ' + str(c) + '\ntemperature decimal = ' + str(d))
+    hum = hum1 + c
+    temp = temp1 + d
+
+    #print('humidity decimal  = ' + str(a) + '\ntemperature decimal = ' + str(b))
 
     # To Define Alerts
-    generate_val(dt, a, b)
+    generate_val(dt, hum, temp)
     # Output to the generates file
-    #output_to_file(dt, a, b)
+    # output_to_file(dt, a, b)
 
     # to iterate the loop
     i = i + 1
@@ -203,6 +172,3 @@ while i < 40:
     # waiting 5 seconds before taking the input
     time.sleep(5)
 
-
-# closing the file
-out.close()
