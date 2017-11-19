@@ -1,15 +1,13 @@
 import time
 import datetime
-import RPi.GPIO as GPIO
 import bluetooth
-import sensor.py
+import sensor
 
 USER_ID = "shivam"
 GPIO_user = 4
 bd_addr = "B8:27:EB:A9:C1:02"
 
-def bin2dec(string_num):
-    return str(int(string_num, 2))
+
 
 def send_to_bt(dt, a, b):
     # sending data to the bluetooth device
@@ -32,13 +30,13 @@ i = 0
 while i < 40:
     dt = datetime.datetime.now()
 
-    hum, temp, humD, tempD = temp(GPIO_user)
+    hum, temp, humD, tempD = sensor.temp(GPIO_user)
 
     # converting them to float
-    humidity = (float) hum
-    temperature = (float) temp
-    humidity_decimal = (float) humD
-    temperature_decimal = (float) tempD
+    humidity = (float)hum
+    temperature = (float)temp
+    humidity_decimal = (float)humD
+    temperature_decimal = (float)tempD
 
     # adding the decimal bits
     humidity = humidity + humidity_decimal
