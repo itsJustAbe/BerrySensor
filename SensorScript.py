@@ -137,16 +137,15 @@ def temp():
     return values
 
 
+''' not required at the moment  '''
 # logentries token
-log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
-
-# creating a file
-# out = open("output.txt", "w")
+#log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
 
 # Bluetooth connection
-
 port = 1
+
 sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+
 sock.connect((bd_addr, port))
 
 # running the program to transfer output to a file
