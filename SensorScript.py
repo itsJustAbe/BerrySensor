@@ -1,16 +1,15 @@
 import time
 import datetime
 import RPi.GPIO as GPIO
+import bluetooth
 
 # noinspection PyUnresolvedReferences
 from logentries import LogentriesHandler
 import logging
 
-# add user Id
-USER_ID = ""
-
-# add user GPIO pin
-GPIO_user = ""
+USER_ID = "shivam"
+GPIO_user = 4
+bd_addr = "B8:27:EB:A9:C1:02"
 
 log = logging.getLogger('logentries')
 log.setLevel(logging.INFO)
@@ -22,10 +21,11 @@ def bin2dec(string_num):
 
 # function testing the room temperature according to which table will be created for alerts
 def generate_val(dt, a, b):
-    # to log the data on logentries
-    log.info('{}-{}-{} {}:{}:{}.{} User ID: {} temperature = {} humidity = {} \n'.format(dt.year, dt.month, dt.day,
-                                                                              dt.hour, dt.minute, dt.second,
-                                                                              dt.microsecond, USER_ID, b, a))
+    # sending data to the bluetooth device
+    sock.send('{}-{}-{} {}:{}:{}.{} User ID: {} temperature = {} humidity = {} \n'.format(dt.year, dt.month, dt.day,
+                                                                                          dt.hour, dt.minute, dt.second,
+                                                                                          dt.microsecond, USER_ID, b,
+                                                                                          a))
 
 
 def temp():
@@ -143,12 +143,18 @@ log.addHandler(LogentriesHandler('8b6afd9f-4f3f-4650-bcaa-2aab406306d3'))
 # creating a file
 # out = open("output.txt", "w")
 
+# Bluetooth connection
+
+port = 1
+sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+sock.connect((bd_addr, port))
+
 # running the program to transfer output to a file
 output = []
 i = 0
 
 # running the loop 40 times to capture 15 outputs
-while True:
+while i < 40:
     dt = datetime.datetime.now()
 
     mylist = temp()
@@ -163,12 +169,8 @@ while True:
     hum = hum1 + c
     temp = temp1 + d
 
-    #print('humidity decimal  = ' + str(a) + '\ntemperature decimal = ' + str(b))
-
     # To Define Alerts
     generate_val(dt, hum, temp)
-    # Output to the generates file
-    # output_to_file(dt, a, b)
 
     # to iterate the loop
     i = i + 1
@@ -176,3 +178,5 @@ while True:
     # waiting 5 seconds before taking the input
     time.sleep(5)
 
+# closing the connection
+sock.close()
