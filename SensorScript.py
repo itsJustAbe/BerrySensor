@@ -1,11 +1,12 @@
-
 # assembler for all the script data
-def assembler(dt, my_list,USER_ID):
-    # converting them to float
+def assembler(dt, my_list, user_id):
+
+    # converting received values to float
     humidity = float(my_list[0])
-    temperature = float(my_list[1])
-    humidity_decimal = float(my_list[2])
-    temperature_decimal = float(my_list[3])
+    humidity_decimal = float(my_list[1])/10
+
+    temperature = float(my_list[2])
+    temperature_decimal = float(my_list[3])/10
 
     # adding the decimal bits
     humidity = humidity + humidity_decimal
@@ -16,7 +17,7 @@ def assembler(dt, my_list,USER_ID):
                                                                                                 dt.day,
                                                                                                 dt.hour, dt.minute,
                                                                                                 dt.second,
-                                                                                                dt.microsecond, USER_ID,
-                                                                                                humidity, temperature)
+                                                                                                dt.microsecond, user_id,
+                                                                                                temperature, humidity)
 
     return format_string

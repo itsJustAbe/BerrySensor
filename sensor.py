@@ -1,27 +1,24 @@
 import RPi.GPIO as GPIO
 import time
 
-# The GPIO pin
-#GPIO_user = 4
-
 
 def bin2dec(string_num):
     return str(int(string_num, 2))
 
 
-def temp(GPIO_user):
+def temp(gpio):
     data = []
     value = []
 
     GPIO.setmode(GPIO.BCM)
 
-    GPIO.setup(GPIO_user, GPIO.OUT)
-    GPIO.output(GPIO_user, GPIO.HIGH)
+    GPIO.setup(gpio, GPIO.OUT)
+    GPIO.output(gpio, GPIO.HIGH)
     time.sleep(0.025)
-    GPIO.output(GPIO_user, GPIO.LOW)
+    GPIO.output(gpio, GPIO.LOW)
     time.sleep(0.02)
 
-    GPIO.setup(GPIO_user, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     for i in range(0, 3500):
         data.append(GPIO.input(4))
@@ -81,7 +78,7 @@ def temp(GPIO_user):
 
     except:
         print("ERR_RANGE")
-        return temp(GPIO_user)
+        return temp(gpio)
 
     try:
         for i in range(0, 8):
@@ -101,7 +98,7 @@ def temp(GPIO_user):
                 crc = crc + "0"
     except:
         print("ERR_RANGE")
-        return temp(GPIO_user)
+        return temp(gpio)
 
     # Display
     humidity = bin2dec(HumidityBit)
