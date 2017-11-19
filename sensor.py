@@ -1,7 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO_user = 4
+# The GPIO pin
+#GPIO_user = 4
 
 
 def bin2dec(string_num):
@@ -10,6 +11,7 @@ def bin2dec(string_num):
 
 def temp(GPIO_user):
     data = []
+    value = []
 
     GPIO.setmode(GPIO.BCM)
 
@@ -99,7 +101,7 @@ def temp(GPIO_user):
                 crc = crc + "0"
     except:
         print("ERR_RANGE")
-        return temp()
+        return temp(GPIO_user)
 
     # Display
     humidity = bin2dec(HumidityBit)
@@ -107,5 +109,11 @@ def temp(GPIO_user):
     temperatureDecimal = bin2dec(TemperatureDecimalBit)
     temperature = bin2dec(TemperatureBit)
 
+    # adding all the items to list
+    value.append(humidity)
+    value.append(humidityDecimal)
+    value.append(temperature)
+    value.append(temperatureDecimal)
+
     # Returning the list
-    return humidity, temperature, humidityDecimal, temperatureDecimal
+    return value
