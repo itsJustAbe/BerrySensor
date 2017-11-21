@@ -1,7 +1,10 @@
 import RPi.GPIO as GPIO
 import time
+from datetime import datetime
+import os
 
 gpio = 4
+user_id = os.uname()[1]
 
 
 def bin2dec(string_num):
@@ -103,16 +106,18 @@ def temp():
         return temp()
 
     # Display
-    humidity = bin2dec(HumidityBit)
-    humidityDecimal = bin2dec(HumidityDecimalBit)
-    temperatureDecimal = bin2dec(TemperatureDecimalBit)
-    temperature = bin2dec(TemperatureBit)
+    humidity = float(bin2dec(HumidityBit))
+    humidity_decimal = float(bin2dec(HumidityDecimalBit)) / 10
+    temperature_decimal = float(bin2dec(TemperatureDecimalBit)) / 10
+    temperature = float(bin2dec(TemperatureBit))
 
-    # adding all the items to list
-    value.append(humidity)
-    value.append(humidityDecimal)
-    value.append(temperature)
-    value.append(temperatureDecimal)
+    # adding the decimal bits
+    humidity = humidity + humidity_decimal
+    temperature = temperature + temperature_decimal
 
-    # Returning the list
-    return value
+    # formatting data to be sent to the bluetooth device
+    format_string = '{} SensorID={}, temperature={}, humidity={} \n'.format(str(datetime.now()), user_id,
+                                                                            temperature, humidity)
+
+    # Returning the format for logentries
+    return format_string
