@@ -1,12 +1,14 @@
 import RPi.GPIO as GPIO
 import time
 
+gpio = 4
+
 
 def bin2dec(string_num):
     return str(int(string_num, 2))
 
 
-def temp(gpio):
+def temp():
     data = []
     value = []
 
@@ -78,7 +80,7 @@ def temp(gpio):
 
     except:
         print("ERR_RANGE")
-        return temp(gpio)
+        return temp()
 
     try:
         for i in range(0, 8):
@@ -98,7 +100,7 @@ def temp(gpio):
                 crc = crc + "0"
     except:
         print("ERR_RANGE")
-        return temp(gpio)
+        return temp()
 
     # Display
     humidity = bin2dec(HumidityBit)

@@ -16,7 +16,7 @@ def node():
     Loop = int(sys.argv[3])
 
     # mac address of windows 10
-    bd_addr = "B8:27:EB:A9:C1:02"
+    bd_addr = "B8:27:EB:94:1F:03"
 
     port = 1
     sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
