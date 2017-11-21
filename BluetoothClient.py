@@ -7,15 +7,10 @@ import time
 
 
 def node():
-    # Gpio pin where the sensor is attached
-    GPIO_PIN = sys.argv[1]
 
     USER_ID = sys.argv[2]
 
-    # number of times the loop will run
-    Loop = int(sys.argv[3])
-
-    # mac address of windows 10
+    # Kruno's Bluetooth
     bd_addr = "B8:27:EB:94:1F:03"
 
     port = 1
@@ -25,14 +20,14 @@ def node():
     # iterator
     i = 0
 
-    while i < Loop:
+    while True:
 
         # date and time object to log current time
         date_time_object = datetime.datetime.now()
 
         # assembling data received from the sensor
         data = SensorScript.assembler(date_time_object,
-                                      sensor.temp(GPIO_PIN),
+                                      sensor.temp(),
                                       USER_ID)
 
         # sending data

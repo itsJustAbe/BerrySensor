@@ -13,7 +13,7 @@ def assembler(dt, my_list, user_id):
     temperature = temperature + temperature_decimal
 
     # formatting data to be sent to the bluetooth device
-    format_string = '{}-{}-{} {}:{}:{}.{} User ID: {} temperature = {} humidity = {} \n'.format(dt.year, dt.month,
+    format_string = '{}-{}-{} {}:{}:{}.{} SensorID={}, temperature={}, humidity={} \n'.format(dt.year, dt.month,
                                                                                                 dt.day,
                                                                                                 dt.hour, dt.minute,
                                                                                                 dt.second,
