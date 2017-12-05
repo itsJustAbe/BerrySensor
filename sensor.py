@@ -1,6 +1,7 @@
+# client script
+
 import RPi.GPIO as GPIO
 import time
-from datetime import datetime
 import os
 
 gpio = 4
@@ -13,16 +14,12 @@ def bin2dec(string_num):
 
 def temp():
     data = []
-    value = []
-
     GPIO.setmode(GPIO.BCM)
-
     GPIO.setup(gpio, GPIO.OUT)
     GPIO.output(gpio, GPIO.HIGH)
     time.sleep(0.025)
     GPIO.output(gpio, GPIO.LOW)
     time.sleep(0.02)
-
     GPIO.setup(gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     for i in range(0, 3500):
@@ -82,7 +79,7 @@ def temp():
                     TemperatureDecimalBit = TemperatureDecimalBit + "0"
 
     except:
-        print("ERR_RANGE")
+        #print("ERR_RANGE")
         return temp()
 
     try:
@@ -102,7 +99,7 @@ def temp():
             else:
                 crc = crc + "0"
     except:
-        print("ERR_RANGE")
+        #print("ERR_RANGE")
         return temp()
 
     # Display
@@ -115,9 +112,5 @@ def temp():
     humidity = humidity + humidity_decimal
     temperature = temperature + temperature_decimal
 
-    # formatting data to be sent to the bluetooth device
-    format_string = '{} SensorID={}, temperature={}, humidity={} \n'.format(str(datetime.now()), user_id,
-                                                                            temperature, humidity)
-
-    # Returning the format for logentries
-    return format_string
+    # Returning the values parsed from the sensor
+    return humidity, temperature, user_id
