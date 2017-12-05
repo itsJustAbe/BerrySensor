@@ -4,10 +4,12 @@ import bluetooth
 import sensor
 import paho.mqtt.client as mqtt
 
+CLIENT_IP = "" 
+
 def mqtt_connect():
     # Connect to MQTT
     client = mqtt.Client()
-    client.connect("192.168.43.126", 1883, 60)
+    client.connect(CLIENT_IP, 1883, 60)
     return client
     
 

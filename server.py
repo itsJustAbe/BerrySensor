@@ -13,6 +13,8 @@ import pyowm
 # sensor utils
 import sensor
 
+# Add log entries API key here
+LOG_ENTRIES_API_KEY = '' 
 
 # Getting external weather data to compare with internal temperature and humididty 
 def get_weather():
@@ -98,7 +100,7 @@ def send_local_log():
 # Set lognetires
 log = logging.getLogger('logentries')
 log.setLevel(logging.INFO)
-log.addHandler(LogentriesHandler('68664606-5dfc-4ea0-971f-5fa77b4fa558'))
+log.addHandler(LogentriesHandler(LOG_ENTRIES_API_KEY))
 
 client_sock = bluetooth_connect()
 client = mqtt_connect()

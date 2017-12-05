@@ -3,8 +3,11 @@ import time
 
 # This is the Publisher
 
+# Add client Ip address on the same network
+CLIENT_IP = "" 
 client = mqtt.Client()
-client.connect("192.168.43.126", 1883, 60)
+
+client.connect(CLIENT_IP, 1883, 60)
 i = 0
 word = 'give me that mac!'
 
